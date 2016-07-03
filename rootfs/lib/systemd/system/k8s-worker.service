@@ -25,7 +25,7 @@ ExecStart=/bin/bash -c "exec docker run \
 							--pod_infra_container_image=gcr.io/google_containers/pause-arm:2.0 \
 							--api-servers=http://${K8S_MASTER_IP}:8080 \
 							--hostname-override=$(/bin/hostname -I | /usr/bin/awk '{print $1}') \
-                            --cluster-dns=10.0.0.10 \
+                            --cluster-dns=192.168.240.10 \
                             --cluster-domain=cluster.local \
                             --containerized"
 ExecStartPost=/bin/bash -c "sleep 10;/usr/bin/docker run -d \

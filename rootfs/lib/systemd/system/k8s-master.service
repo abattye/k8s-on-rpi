@@ -24,6 +24,7 @@ ExecStart=/bin/bash -c "exec docker run \
 							--enable-server \
 							--allow-privileged=true \
 							--pod_infra_container_image=gcr.io/google_containers/pause-arm:2.0 \
+							--service-ip-range 10.0.3.0/24\
 							--api-servers=http://10.0.0.80:8080 \
 							--hostname-override=10.0.0.80 \
                             --cluster-dns=192.168.240.10 \

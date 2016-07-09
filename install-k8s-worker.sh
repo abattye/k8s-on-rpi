@@ -12,6 +12,9 @@ cp -f ./rootfs/lib/systemd/system/docker.service /lib/systemd/system/docker.serv
 cp -f ./rootfs/lib/systemd/system/docker.socket /lib/systemd/system/docker.socket
 cp -f ./rootfs/lib/systemd/system/k8s-worker.service /lib/systemd/system/k8s-worker.service
 
+cp -f ./conf/kube-proxy.yaml /etc/kubernetes/manifests-multi
+
+
 echo "Reloading the system service configuration"
 systemctl daemon-reload
 

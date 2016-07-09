@@ -4,14 +4,15 @@ After=docker.service
 Requires=k8s-etcd.service
 
 [Service]
-#EnvironmentFile=/etc/kubernetes/k8s.conf
-ExecStartPre=-/usr/bin/docker kill k8s-master k8s-master-proxy
-ExecStartPre=-/usr/bin/docker rm k8s-master k8s-master-proxy
+EnvironmentFile=/etc/kubernetes/k8s.conf
+ExecStartPre=-/usr/bin/docker kill k8s-master
+ExecStartPre=-/usr/bin/docker rm k8s-master
 ExecStart=/bin/bash -c "exec docker run \
 						--name=k8s-master \
 						--net=host \
 						--pid=host \
 						--privileged \
+						-v /etc/kubernetes/manifests-multi:/etc/kubernetes/manifests-multi
 						-v /sys:/sys:ro \
 						-v /var/run:/var/run:rw \
                         -v /:/rootfs:ro \
@@ -24,20 +25,12 @@ ExecStart=/bin/bash -c "exec docker run \
 							--enable-server \
 							--allow-privileged=true \
 							--pod_infra_container_image=gcr.io/google_containers/pause-arm:2.0 \
-							--api-servers=http://10.0.0.80:8080 \
-							--hostname-override=10.0.0.80 \
-                            --cluster-dns=192.168.240.10 \
+							--api-servers=http://${K8S_MASTER_IP}:8080 \
+							--hostname-override=${K8S_MASTER_IP} \
+                            --cluster-dns=${K8S_DNS_IP} \
                             --cluster-domain=cluster.local \
-                            --containerized \
 							--config=/etc/kubernetes/manifests-multi"
-ExecStartPost=/bin/bash -c "sleep 10;/usr/bin/docker run -d \
-						--name=k8s-master-proxy \
-						--net=host \
-						--privileged \
-						gcr.io/google_containers/hyperkube-arm:v1.2.0 /hyperkube proxy \
-							--master=http://10.0.0.80:8080 \
-							--v=2"
-#ExecStop=/usr/bin/docker stop k8s-master k8s-master-proxy
+ExecStop=/usr/bin/docker stop k8s-master
 Restart=on-failure
 RestartSec=5
 

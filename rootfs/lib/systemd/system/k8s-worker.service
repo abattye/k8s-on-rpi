@@ -11,6 +11,7 @@ ExecStart=/bin/bash -c "exec docker run \
 						--net=host \
 						--pid=host \
 						--privileged \
+						-v /etc/kubernetes/manifests-multi:/etc/kubernetes/manifests-multi
 						-v /sys:/sys:ro \
 						-v /var/run:/var/run:rw \
                         -v /:/rootfs:ro \
@@ -25,17 +26,10 @@ ExecStart=/bin/bash -c "exec docker run \
 							--pod_infra_container_image=gcr.io/google_containers/pause-arm:2.0 \
 							--api-servers=http://${K8S_MASTER_IP}:8080 \
 							--hostname-override=$(/bin/hostname -I | /usr/bin/awk '{print $1}') \
-                            --cluster-dns=192.168.240.10 \
+                            --cluster-dns=${K8S_DNS_IP} \
                             --cluster-domain=cluster.local \
-                            --containerized"
-ExecStartPost=/bin/bash -c "sleep 10;/usr/bin/docker run -d \
-						--name=k8s-worker-proxy \
-						--net=host \
-						--privileged \
-						gcr.io/google_containers/hyperkube-arm:v1.2.0 /hyperkube proxy \
-							--master=http://${K8S_MASTER_IP}:8080 \
-							--v=2"
-#ExecStop=/usr/bin/docker stop k8s-worker k8s-worker-proxy
+                            --config=/etc/kubernetes/manifests-multi"
+#ExecStop=/usr/bin/docker stop k8s-worker
 Restart=on-failure
 RestartSec=5
 

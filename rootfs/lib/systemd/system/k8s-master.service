@@ -12,7 +12,7 @@ ExecStart=/bin/bash -c "exec docker run \
 						--net=host \
 						--pid=host \
 						--privileged \
-						-v /etc/kubernetes/manifests-multi:/etc/kubernetes/manifests-multi
+						-v /etc/kubernetes/manifests-multi:/etc/kubernetes/manifests-multi \
 						-v /sys:/sys:ro \
 						-v /var/run:/var/run:rw \
                         -v /:/rootfs:ro \

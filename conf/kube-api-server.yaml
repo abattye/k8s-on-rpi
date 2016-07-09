@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-apiserver
+  namespace: kube-system
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-apiserver
+    image: gcr.io/google_containers/hyperkube-arm:v1.2.0
+    command:
+    - /hyperkube
+    - apiserver
+    - --bind-address=0.0.0.0
+    - --etcd-servers=10.0.0.80
+    - --allow-privileged=true
+    - --service-cluster-ip-range=10.3.0.0/23
+    - --secure-port=443
+    - --advertise-address=10.0.0.80
+    - --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,ResourceQuota
+    - --runtime-config=extensions/v1beta1=true,extensions/v1beta1/thirdpartyresources=true
+    ports:
+    - containerPort: 8080
+      hostPort: 8080
+      name: local

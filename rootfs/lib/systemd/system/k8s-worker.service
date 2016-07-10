@@ -4,14 +4,14 @@ After=docker.service
 
 [Service]
 EnvironmentFile=/etc/kubernetes/k8s.conf
-ExecStartPre=-/usr/bin/docker kill k8s-worker k8s-worker-proxy
-ExecStartPre=-/usr/bin/docker rm k8s-worker k8s-worker-proxy
+ExecStartPre=-/usr/bin/docker kill k8s-worker
+ExecStartPre=-/usr/bin/docker rm k8s-worker
 ExecStart=/bin/bash -c "exec docker run \
 						--name=k8s-worker \
 						--net=host \
 						--pid=host \
 						--privileged \
-						-v /etc/kubernetes/manifests-multi:/etc/kubernetes/manifests-multi
+						-v /etc/kubernetes/manifests-multi:/etc/kubernetes/manifests-multi \
 						-v /sys:/sys:ro \
 						-v /var/run:/var/run:rw \
                         -v /:/rootfs:ro \

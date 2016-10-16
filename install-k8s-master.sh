@@ -41,6 +41,7 @@ echo "Enabling the new services"
 systemctl enable k8s-docker.service k8s-docker-bootstrap.service k8s-docker-bootstrap.socket k8s-docker.socket k8s-etcd.service k8s-flannel.service k8s-master.service
 
 echo "Starting the docker bootstrap service"
+systemctl start k8s-docker-bootstrap.socket
 systemctl start k8s-docker-bootstrap.service
 
 echo "Pulling necessary etcd Docker image"

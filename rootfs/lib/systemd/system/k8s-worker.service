@@ -18,7 +18,7 @@ ExecStart=/bin/bash -c "exec docker run \
                         -v /dev:/dev \
                         -v /var/lib/docker/:/var/lib/docker:rw \
                         -v /var/lib/kubelet/:/var/lib/kubelet:rw \
-						gcr.io/google_containers/hyperkube-arm:v1.2.0 /hyperkube kubelet \
+						gcr.io/google_containers/hyperkube-arm:v1.3.6 ./hyperkube kubelet \
 							--v=2 \
 							--address=0.0.0.0 \
 							--enable-server \

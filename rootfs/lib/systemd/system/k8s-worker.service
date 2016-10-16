@@ -1,6 +1,6 @@
 [Unit]
 Description=The Worker Components for Kubernetes
-After=docker.service
+After=k8s-docker.service
 
 [Service]
 EnvironmentFile=/etc/kubernetes/k8s.conf

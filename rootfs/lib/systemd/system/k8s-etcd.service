@@ -1,6 +1,6 @@
 [Unit]
 Description=Etcd for Kubernetes
-After=docker-bootstrap.service
+After=k8s-docker-bootstrap.service
 
 [Service]
 #TimeoutStartSec=120

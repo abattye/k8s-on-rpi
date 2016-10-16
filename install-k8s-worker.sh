@@ -26,11 +26,16 @@ systemctl daemon-reload
 echo "Stopping the docker service"
 systemctl stop docker.service
 
+echo "Disabling the current service"
+systemctl disable docker.service docker-bootstrap.service docker-bootstrap.socket docker.socket
+
+
 echo "Enabling the new services"
-systemctl enable docker-bootstrap.service k8s-flannel.service k8s-worker.service
+systemctl enable k8s-docker.service k8s-docker-bootstrap.service k8s-docker-bootstrap.socket k8s-docker.socket k8s-etcd.service k8s-flannel.service k8s-worker.service
+
 
 echo "Starting the docker bootstrap service"
-systemctl start docker-bootstrap.service
+systemctl start k8s-docker-bootstrap.service
 
 echo "Pulling necessary flannel Docker image"
 docker -H unix:///var/run/docker-bootstrap.sock pull andrewpsuedonym/flanneld
@@ -38,10 +43,10 @@ echo "Starting the flannel service"
 systemctl start k8s-flannel.service
 
 echo "Starting the docker service"
-systemctl start docker.service
+systemctl start k8s-docker.service
 
 echo "Pulling necessary hyperkube Docker image"
-docker pull gcr.io/google_containers/hyperkube-arm:v1.2.0
+docker pull gcr.io/google_containers/hyperkube-arm:v1.3.6
 echo "Starting the kubernetes worker service"
 systemctl start k8s-worker.service
 

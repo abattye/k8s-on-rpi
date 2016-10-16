@@ -1,6 +1,6 @@
 [Unit]
 Description=Docker Bootstrap Socket for the API
-PartOf=docker-bootstrap.service
+PartOf=k8s-docker-bootstrap.service
 
 [Socket]
 ListenStream=/var/run/docker-bootstrap.sock
